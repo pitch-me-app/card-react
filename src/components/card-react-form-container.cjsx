@@ -108,7 +108,8 @@ CardReactFormContainer = createReactClass
           onFocus: @inputOnFocus
           onBlur: @inputOnBlur
           ref: @inputsRefs[child.props.name]
-          defaultValue: @inputsValues[child.props.name]
+          defaultValue: @inputsValues[child.props.name],
+          error: newClassName && newClassName.includes(@props.classes.invalid),
           className: newClassName
         }, child.props && child.props.children)
       else
@@ -148,6 +149,24 @@ CardReactFormContainer = createReactClass
         currentInputsValidationClass[inputsNames["name"]] = @getInputValidationClass(inputValue isnt "")
 
     @setState {inputsValidationClass: currentInputsValidationClass}
+
+  getInput: (inputName)->
+    ReactDOM.findDOMNode(@refs[inputName])
+
+  isValid: (inputName, inputValue)->
+    inputsNames = @props.formInputsNames
+    currentInputsValidationClass = @state.inputsValidationClass
+
+    switch inputName
+      when inputsNames["expiry"]
+        objVal = Payment.fns.cardExpiryVal inputValue
+        return Payment.fns.validateCardExpiry objVal.month, objVal.year
+      when inputsNames["cvc"]
+        return Payment.fns.validateCardCVC inputValue, @cardType
+      when inputsNames["number"]
+        return Payment.fns.validateCardNumber inputValue
+      when inputsNames["name"]
+        return inputValue isnt ""
 
   getInputValidationClass: (inputValid)->
     if inputValid then @props.classes.valid else @props.classes.invalid

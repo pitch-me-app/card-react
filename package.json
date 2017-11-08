@@ -6,6 +6,8 @@
   "dependencies": {
     "classnames": "^2.1.2",
     "create-react-class": "^15.5.3",
+    "grunt-sass": "^2.0.0",
+    "node-sass": "^4.6.0",
     "payment": "~2.2.1"
   },
   "devDependencies": {
