@@ -131,6 +131,8 @@ CardReactFormContainer = createReactClass
   inputOnBlur: (event)->
     @focusedInput = ''
     @cardFlipped = false
+    @inputsValues[event.target.name] = event.target.value
+    @validateInput event.target.name, event.target.value
     @renderCardComponent()
 
   validateInput: (inputName, inputValue)->
@@ -151,7 +153,7 @@ CardReactFormContainer = createReactClass
     @setState {inputsValidationClass: currentInputsValidationClass}
 
   getInput: (inputName)->
-    ReactDOM.findDOMNode(@refs[inputName])
+    ReactDOM.findDOMNode(@refs[@inputsRefs[inputName]])
 
   isValid: (inputName, inputValue)->
     inputsNames = @props.formInputsNames
